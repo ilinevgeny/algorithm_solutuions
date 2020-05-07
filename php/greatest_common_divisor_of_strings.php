@@ -1,4 +1,5 @@
 <?php
+
 class Solution
 {
 
@@ -7,72 +8,71 @@ class Solution
      * @param String $str2
      * @return String
      */
-    //take char-frame from 2 units by for
-    //match frame in str2 by for
-    //increase frame + 1
     function gcdOfStrings($str1, $str2)
     {
-        if (strlen($str1) < 1 || strlen($str1) > 1000 || strlen($str2) < 1 || strlen($str2) > 1000)
-            return '' . PHP_EOL;
-        $str1Arr = str_split($str1);
-//        for($j = 0; $j < count($str1Arr); $j++)
-//        {
-//           $someArr[$str1Arr[$j]] = $j * 2;
-//        }
-//        print_r($someArr); exit;
-
         $result = '';
-        $frameMatches = [];
-        for($lengthFrame = 2; $lengthFrame < strlen($str1); $lengthFrame++)
+        if (strlen($str1) < 1 || strlen($str1) > 1000 || strlen($str2) < 1 || strlen($str2) > 1000)
+            return '';
+        $str1Arr = str_split(strtoupper($str1));
+        $str2Arr = str_split(strtoupper($str2));
+
+        foreach($str1Arr as $char)
         {
-            for($i = 0; $i + $lengthFrame < strlen($str1); $i++)
+            echo ord($char) - 64 . PHP_EOL;
+        }
+        $frameMatches = [];
+        $countFrameInStr1 = 0;
+        $str1 = strtoupper($str1);
+        for ($lengthFrame = 2; $lengthFrame <= strlen($str2); $lengthFrame++) {
+            $frameS = implode(array_slice($str1Arr, 0, $lengthFrame));
+            $frameS2 = implode(array_slice($str2Arr, 0, $lengthFrame));
+            echo  $frameS . "______" . $frameS2 . PHP_EOL;
+            if($frameS == $frameS2)
             {
-                $frame = implode(array_slice($str1Arr, $i, $lengthFrame)); //this applying until count strlen(str1) i.e dynamically
-                //echo $frame . PHP_EOL;
-                //start divide string: take first frame and divide both string
+                $pattern = $frameS2;
+            }
+//            $foundMatches = substr_count($str1, $frameS);
+//            if ($foundMatches >= $countFrameInStr1 && $foundMatches > 0 && substr_count($str2, $frameS) > 0) {
+//                $countFrameInStr1 = substr_count($str1, $frameS);
+//                $countFrameInStr2 = substr_count($str2, $frameS);
+//                $frameMatches[$countFrameInStr1] = $frameS;
+//                $frameMatches[$countFrameInStr2] = $frameS;
+//            }
+        }
+        exit;
+        print_r($frameMatches);
+        if (count($frameMatches) > 0) {
+            $str1Value = array_keys(($frameMatches))[0];
+            $str2Value = array_keys(($frameMatches))[1];
 
-                if (strpos($str2, $frame) !== false)
+            $countMatches = substr_count($str2, $frameMatches[$str1Value]) * strlen($frameMatches[$str1Value]);
+            if (($str1Value * strlen($frameMatches[$str1Value])) < strlen($str1)) {
+                return $result;
+            } elseif ($countMatches < strlen($str2)) {
+                return $result;
+            } elseif ($countMatches == strlen($str2) && $countMatches == strlen($str1)) {
+                for($j = 0; $j < $str1Value; $j++)
                 {
-                    //echo "Founded " . $frame . PHP_EOL;
-
-                    if(strlen($frame) > 1)
-                    {
-                       // echo substr_count($str2, $frame) . PHP_EOL;
-                        //echo substr_count($str1, $frame) . PHP_EOL;
-                        $frameMatches[$frame] = $frame;
-                    }
+                    $result .= implode($frameMatches);
                 }
+            } else {
+                $result = implode($frameMatches);
             }
         }
-        print_r($frameMatches);
-        /*       foreach ($str1Arr as $key => $char) {
-                   $result .= $char;
-                   echo "char is " . $result . PHP_EOL;
-       //            if(substr_count($str2, $result) > 1) {
-       //                return $result;
-       //            }
-                   if (strpos($str2, $result) === false) {
-                       if(strlen($result) >= strlen($str1))
-                       {
-                           $result = substr($result, 0, -1);
-                           break;
-                       }
-                       else {
-                           //$result = '';
-                       }
-                   }
-               }*/
-
         return $result;
     }
 }
-
-//$str1 = "ABCABCABC";
-$str1 = "ABABAB";
+$str1 = "CABCAB";
 $str2 = "ABC";
-$str2 = "ABAB";
+//$str1 = "ABCABCABC";
+//$str2 = "ABCD";
+//$str1 = "ABABABAB";
+//$str2 = "ABABABAB";
 //$str1 = "LEET";
 //$str2 = "CODE";
+//$str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//$str2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//$str1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+//$str2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 $devStr = new Solution();
-
 echo $devStr->gcdOfStrings($str1, $str2) . PHP_EOL;
